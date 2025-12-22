@@ -1,0 +1,23 @@
+services:
+  app:
+    image: node:lts-alpine3.23
+
+  postgres:
+    image: postgres:16.11-alpine3.23
+    ports:
+    - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: demo
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    networks:
+      - net
+
+volumes:
+  db_data:
+
+networks:
+  net:
+    driver: bridge
