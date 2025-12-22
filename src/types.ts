@@ -17,3 +17,15 @@ export enum ReviewGrade {
     Good = 4,
     Easy = 5
 }
+
+export interface CardRow {
+    id: string;
+    question: string;
+    answer: string;
+    interval: number;
+    repetition: number,
+    easiness_factor: number;
+    total_reviews: number;
+    date_added: Date;
+    date_next_review: Date;
+}
