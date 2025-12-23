@@ -1,10 +1,10 @@
 import { pool } from '../db.ts';
-import { CardRepository } from './CardRepository.ts';
-import type { Card, CardRow } from '../types.ts';
+import type { CardRepository } from './CardRepository.ts';
+import type { Card } from '../types.ts';
 
-class PostgresCardRepository implements CardRepository {
+export class PostgresCardRepository implements CardRepository {
     async create(card: Card): Promise<void> {
-        const query = 'INSERT INTO cards (id, question, answer, interval, repetition, easinessFactor, totalCardReviews, dateAdded, dateNextReview) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)';
+        const query = 'INSERT INTO cards (id, question, answer, interval, repetition, easiness_factor, total_reviews, date_added, date_next_review) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)';
         const values = [
             card.id, // $1
             card.question, // $2
