@@ -41,6 +41,27 @@ export class PostgresCardRepository implements CardRepository {
         }
     }
 
+    async getAllCards(): Promise<Card[]> {
+        const query = 'SELECT * FROM cards';
+
+        const result = await pool.query(query, []);
+
+        for (const row of result.rows) {
+            rows.push({
+                id: row.id,
+                question: row.question,
+                answer: row.answer,
+                interval: row.interval,
+                repetition: row.repetition,
+                easinessFactor: row.easiness_factor,
+                totalCardReviews: row.total_reviews,
+                dateAdded: row.date_added,
+                dateNextReview: row.date_next_review
+            });
+        }
+        return rows;
+    }
+
     async getDueCards(date: Date): Promise<Card[]> {
         const query = 'SELECT * FROM cards WHERE date_next_review <= $1';
 
