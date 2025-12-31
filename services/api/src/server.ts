@@ -1,3 +1,7 @@
+process.on('unhandledRejection', (reason, promise) => {
+  console.log('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 import express from 'express';
 import { createCard } from './card.ts';
 import { PostgresCardRepository } from './repositories/PostgresCardRepository.ts';
@@ -7,6 +11,8 @@ const port = 3000;
 
 app.use(express.json());
 
+const repo = new PostgresCardRepository();
+
 app.post('/cards', async (req, res) => {
     try {
         const question = req.body.question;
@@ -14,8 +20,7 @@ app.post('/cards', async (req, res) => {
 
         const card = createCard(question, answer);
 
-        const repo = new PostgresCardRepository();
-        repo.create(card);
+        await repo.create(card);
 
         res.status(201).json(card);
     } catch (error) {
@@ -26,11 +31,9 @@ app.post('/cards', async (req, res) => {
 
 app.get('/cards/all', async (req, res) => {
     try {
-        const repo = new PostgresCardRepository();
+        const cards = await repo.getAllCards();
 
-        repo.getAllCards();
-
-        res.status(201).json(card);
+        res.status(201).json(cards);
     } catch (error) {
         console.error(error)
         res.status(500).json({ error: "Database connection error" });
@@ -39,12 +42,10 @@ app.get('/cards/all', async (req, res) => {
 
 app.get('/cards/due', async (req, res) => {
     try {
-        const repo = new PostgresCardRepository();
-
         const date = new Date();
-        const result = await repo.getDueCards(date);
+        const cards = await repo.getDueCards(date);
 
-        res.status(201).json(result);
+        res.status(201).json(cards);
     } catch (error) {
         console.error(error)
         res.status(500).json({ error: "Database connection error" });
@@ -53,10 +54,8 @@ app.get('/cards/due', async (req, res) => {
 
 app.get('/cards/:id', async (req, res) => {
     try {
-        const repo = new PostgresCardRepository();
-
         const id = req.params.id;
-        const result = await repo.getById(id);
+        const card = await repo.getById(id);
 
         if(!card){
             res.status(404).json({ error: "Card not found!" });
@@ -73,4 +72,3 @@ app.get('/cards/:id', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
-
