@@ -1,5 +1,5 @@
-import { PostgresCardRepository } from "./repositories/PostgresCardRepository.ts";
-import { calculateReview } from "./algo.ts";
+import { PostgresCardRepository } from "./repositories/PostgresCardRepository.js";
+import { calculateReview } from "./algo.js";
 
 export async function reviewCard(id: string, grade: number) {
     const repo = new PostgresCardRepository();

@@ -1,6 +1,6 @@
-import { pool } from '../db.ts';
-import type { CardRepository } from './CardRepository.ts';
-import type { Card } from '../types.ts';
+import { pool } from '../db.js';
+import type { CardRepository } from './CardRepository.js';
+import type { Card } from '../types.js';
 
 export class PostgresCardRepository implements CardRepository {
     async create(card: Card): Promise<void> {
@@ -16,7 +16,7 @@ export class PostgresCardRepository implements CardRepository {
             card.dateAdded, // $8
             card.dateNextReview // $9
        ];
-        return await pool.query(query, values);
+        await pool.query(query, values);
     }
 
     async getById(id: string): Promise<Card | null> {
@@ -46,6 +46,7 @@ export class PostgresCardRepository implements CardRepository {
 
         const result = await pool.query(query, []);
 
+        const rows: Card[] = [];
         for (const row of result.rows) {
             rows.push({
                 id: row.id,
@@ -97,12 +98,12 @@ export class PostgresCardRepository implements CardRepository {
             card.id, // $7
         ]
 
-        return await pool.query(query, values);
+        await pool.query(query, values);
     }
 
     async deleteCard(id: string): Promise<void> {
         const query = 'DELETE FROM cards WHERE id = $1';
 
-        return await pool.query(query, [id]);
+        await pool.query(query, [id]);
     }
 }

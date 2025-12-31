@@ -1,10 +1,6 @@
-process.on('unhandledRejection', (reason, promise) => {
-  console.log('Unhandled Rejection at:', promise, 'reason:', reason);
-});
-
 import express from 'express';
-import { createCard } from './card.ts';
-import { PostgresCardRepository } from './repositories/PostgresCardRepository.ts';
+import { createCard } from './card.js';
+import { PostgresCardRepository } from './repositories/PostgresCardRepository.js';
 
 const app = express();
 const port = 3000;
@@ -62,7 +58,7 @@ app.get('/cards/:id', async (req, res) => {
             return;
         }
 
-        res.status(201).json(result);
+        res.status(201).json(card);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Database connection error" });
