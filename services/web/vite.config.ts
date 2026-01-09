@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
     server: {
         host: true,
-        allowedHosts: ["neal-minipc"],
+        allowedHosts: ["howl"],
         port: 5173
     }
 });

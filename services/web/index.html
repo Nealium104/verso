@@ -2,12 +2,43 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>web</title>
+    <link rel="stylesheet" href="src/style.css" />
+    <title>verso</title>
   </head>
   <body>
+    <nav class="nav">
+        <div id="nav__brand">verso</div>
+        <ul>
+            <li>
+                <a href="/about.html">about<a/>
+            </li>
+        </ul>
+    </nav>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
+    <div class="card">
+        <h2 id="card-title" class="card__title">question</h2>
+        <p id="card-content" class="card__content"></p>
+        <ul id="card-options" class="card__options">
+            <li>
+                <button>answer</button>
+            </li>
+        </ul>
+    </div>
+    <div class="card">
+        <h2 class="card__title">new card</h2>
+        <div class="card__content">
+            <div class="field">
+                <label class="field__label" for="question">question</label>
+                <textarea class="field__input" name="question"></textarea>
+            </div>
+            <div class="field">
+                <label class="field__label" for="answer">answer</label>
+                <textarea class="field__input" name="answer"></textarea>
+            </div>
+            <input class="card__options" type="submit" value="create"/>
+        </div>
+    </div>
   </body>
 </html>
