@@ -1,5 +1,3 @@
-const url = "http://howl:3000";
-
 let mode = "question";
 let dueCards = [];
 let currentCardIndex = 0;
@@ -7,15 +5,14 @@ let currentCardIndex = 0;
 const cardTitle = document.querySelector("#card-title");
 const cardContent = document.querySelector("#card-content");
 const cardOptions = document.querySelector("#card-options");
+const createCardForm = document.querySelector("#create-card-form");
 
 async function init() {
     try {
-        cardContent.innerText = "Loading card"
-
-        dueCards = await getDueCards(url);
+        dueCards = await getDueCards("/api/cards/due");
 
         if (!dueCards || dueCards.length === 0) {
-            cardContent.innerText = "No cards due";
+            cardContent.innerText = "no cards due";
             return;
         }
         cardContent.innerText = dueCards[currentCardIndex].question;
@@ -45,7 +42,7 @@ function setOptions(currentMode){
 
 async function getDueCards(url){
     try {
-        const response = await fetch(`${url}/cards/due`);
+        const response = await fetch(`/api/cards/due`);
 
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
@@ -75,5 +72,39 @@ async function getDueCards(url){
             }
         }
     });
+
+async function createCard(){
+    try {
+        const response = await fetch(`/cards/create`);
+
+        if (!response.ok){
+            throw new Error(`Response status: ${response.status}`);
+        }
+    } catch (e) {
+        console.error(e.message);
+        return;
+    }
+}
+
+createCardForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target as HTMLFormElement);
+    const data = Object.fromEntries(formData);
+
+    const response = await fetch('/api/cards/create', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        console.error("Card could not be created");
+    }
+})
+
+
 
 init();

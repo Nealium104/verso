@@ -5,11 +5,12 @@ import { PostgresCardRepository } from './repositories/PostgresCardRepository.js
 const app = express();
 const port = 3000;
 
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const repo = new PostgresCardRepository();
 
-app.post('/cards', async (req, res) => {
+app.post('/cards/create', async (req, res) => {
     try {
         const question = req.body.question;
         const answer = req.body.answer;

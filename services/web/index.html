@@ -19,7 +19,7 @@
     <script type="module" src="/src/main.ts"></script>
     <div class="card">
         <h2 id="card-title" class="card__title">question</h2>
-        <p id="card-content" class="card__content"></p>
+        <p id="card-content" class="card__content">Loading...</p>
         <ul id="card-options" class="card__options">
             <li>
                 <button>answer</button>
@@ -28,7 +28,7 @@
     </div>
     <div class="card">
         <h2 class="card__title">new card</h2>
-        <div class="card__content">
+        <form id="create-card-form" class="card__content" action="/api/cards/create" method="POST">
             <div class="field">
                 <label class="field__label" for="question">question</label>
                 <textarea class="field__input" name="question"></textarea>
@@ -38,7 +38,7 @@
                 <textarea class="field__input" name="answer"></textarea>
             </div>
             <input class="card__options" type="submit" value="create"/>
-        </div>
+        </form>
     </div>
   </body>
 </html>
