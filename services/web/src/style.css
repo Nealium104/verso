@@ -140,3 +140,12 @@ main {
     display: flex;
     flex-direction: column;
 }
+
+@media min-width(28rem) {}
+
+@media (min-width: 10px) {
+    .card {
+        max-width: 60%;
+        margin: auto;
+    }
+}

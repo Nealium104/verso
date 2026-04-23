@@ -1,13 +1,34 @@
+import DOMPurify  from "dompurify";
+import { marked } from "marked";
+
+interface Card {
+    id: string;
+    question: string;
+    answer: string;
+    interval: number;
+    repetition: number;
+    easinessFactor: number;
+    totalCardReviews: number;
+    dateAdded: Date;
+    dateNextReview: Date;
+}
+
 let mode = "question";
-let dueCards = [];
+let dueCards: Card[] = [];
 let currentCardIndex = 0;
 
-const cardTitle = document.querySelector("#card-title");
-const cardContent = document.querySelector("#card-content");
-const cardOptions = document.querySelector("#card-options");
-const createCardForm = document.querySelector("#create-card-form");
+const cardTitle = document.querySelector("#card-title") as HTMLElement | null;
+const cardContent = document.querySelector("#card-content") as HTMLElement | null;
+const cardOptions = document.querySelector("#card-options") as HTMLElement | null;
+const createCardForm = document.querySelector("#create-card-form") as HTMLElement | null;
 
 async function init() {
+
+    if (!cardContent){
+        console.error("UI element #card-content not found.");
+        return
+    }
+
     try {
         dueCards = await getDueCards("/api/cards/due");
 
@@ -22,15 +43,17 @@ async function init() {
     }
 }
 
-function renderCard(index) {
+function renderCard(index: number) {
     const card = dueCards[index];
 
-    if(!card) return;
+    if(!card || !cardContent) return;
 
     cardContent.innerText = card.question;
 }
 
-function setOptions(currentMode){
+function setOptions(currentMode: string){
+    if (!currentMode || !cardTitle || !cardOptions) return;
+
     if (currentMode === "question") {
         cardTitle.innerText = "question";
         cardOptions.innerHTML = "<button>answer</button>";
@@ -40,7 +63,7 @@ function setOptions(currentMode){
     cardOptions.innerHTML = "<li>instant</li>\n<li>secs</li>\n<li>&#60 min</li>\n<li>mins</li>\n<li>blank</li>"
 }
 
-async function getDueCards(url){
+async function getDueCards(url: string){
     try {
         const response = await fetch(`/api/cards/due`);
 
